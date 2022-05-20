@@ -1,0 +1,25 @@
+import psycopg2
+import pandas as pd
+
+con = psycopg2.connect(
+        dbname='xx',
+        host='xx',
+        port='xx',
+        user='##',
+        password='##')
+
+
+def simple_query(query_string):
+    query = f"""
+        {query_string}
+    """
+    cur = con.cursor()
+    cur.execute(query)
+    df_redshift = pd.read_sql(query, con)
+    print(df_redshift.to_string())
+    # con.disconnect()
+
+
+if __name__ == '__main__':
+    query_string = "select code, from db.sales limit 10"
+    simple_query(query_string)
